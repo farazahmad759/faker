@@ -26,7 +26,7 @@ exports.getAll = async function (req, res) {
     return res.send({ msg: "No record found", data: [] });
   }
   let schema = schemas[_resourceName].main;
-  console.log("-----> schemas", schemas);
+  //   console.log("-----> schemas", schemas);
   if (!req.query.limit) {
     req.query.limit = 20;
   }
@@ -51,13 +51,13 @@ function getResourceName(url, startChar, endChar) {
   if (extract) {
     extract = extract.pop();
   }
-  console.log(
-    "----> url",
-    url,
-    "regExpression --> ",
-    regExp,
-    "extract ---> ",
-    extract
-  );
+  //   console.log(
+  //     "----> url",
+  //     url,
+  //     "regExpression --> ",
+  //     regExp,
+  //     "extract ---> ",
+  //     extract
+  //   );
   return extract;
 }
