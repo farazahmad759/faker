@@ -3,7 +3,7 @@ exports.generateData = (schema, query) => {
   let data = {};
   Object.keys(schema).forEach((schemaKey) => {
     let schemaKeyValue = schema[schemaKey];
-    let children = schemaKeyValue.split(".");
+    let children = schemaKeyValue.type.split(".");
     if (query[schemaKey]) {
       console.log("---> exists", schemaKey);
       data[schemaKey] = query[schemaKey];

@@ -7,7 +7,8 @@ let router = express.Router();
  * **************************************************************
  */
 // todos
-router.get("/todos", apiRoutes.todos.getAll);
+router.get("/*/:id", apiRoutes.todos.getOne);
+router.get("/*", apiRoutes.todos.getAll);
 
 exports.default = router;
 exports.router = router;

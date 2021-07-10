@@ -1,15 +1,32 @@
 let { generateData } = require("../../utils/functions");
-exports.getAll = async function (req, res) {
-  let schema = {
-    id: "datatype.number",
-    title: "lorem.word",
-    content: "lorem.sentence",
-    createdAt: "datatype.datetime",
-    updatedAt: "datatype.datetime",
-    deletedAt: "datatype.datetime",
-    comopleted: "datatype.boolean",
-  };
+let schemas = require("../../schemas/index");
+exports.getOne = async function (req, res, next) {
+  if (isNaN(req.params.id)) {
+    return res.send({ msg: "No record found", data: [] });
+  }
+  let _resourceName = getResourceName(req.url, `/`, `/`);
+  if (!_resourceName) {
+    return res.send({ msg: "No record found", data: [] });
+  }
+  if (!schemas[_resourceName]) {
+    return res.send({ msg: "No record found", data: [] });
+  }
+  let schema = schemas[_resourceName].main;
+  let data = {};
+  data = generateData(schema, { id: req.params.id });
+  res.send({ msg: "todos.getOne", data });
+};
 
+exports.getAll = async function (req, res) {
+  let _resourceName = getResourceName(req.url, `/`, `?`);
+  if (!_resourceName) {
+    return res.send({ msg: "No record found", data: [] });
+  }
+  if (!schemas[_resourceName]) {
+    return res.send({ msg: "No record found", data: [] });
+  }
+  let schema = schemas[_resourceName].main;
+  console.log("-----> schemas", schemas);
   if (!req.query.limit) {
     req.query.limit = 20;
   }
@@ -22,3 +39,25 @@ exports.getAll = async function (req, res) {
   }
   res.send({ msg: "todos.getAll", data });
 };
+
+function getResourceName(url, startChar, endChar) {
+  let extract = "";
+  if (!url.includes("?")) {
+    url = url + "?";
+  }
+  let regExp = new RegExp(`\\${startChar}(.*)\\${endChar}`, ""); // /\/(.*)\?/
+
+  extract = url.match(regExp);
+  if (extract) {
+    extract = extract.pop();
+  }
+  console.log(
+    "----> url",
+    url,
+    "regExpression --> ",
+    regExp,
+    "extract ---> ",
+    extract
+  );
+  return extract;
+}
