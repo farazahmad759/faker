@@ -14,7 +14,7 @@ exports.getOne = async function (req, res, next) {
   let schema = schemas[_resourceName].main;
   let data = {};
   data = generateData(schema, { id: req.params.id });
-  res.send({ msg: "todos.getOne", data });
+  res.send({ msg: `${_resourceName}.getOne`, data });
 };
 
 exports.getAll = async function (req, res) {
@@ -37,7 +37,7 @@ exports.getAll = async function (req, res) {
   for (let p = 0; p < parseInt(req.query.limit); p++) {
     data.push(generateData(schema, req.query));
   }
-  res.send({ msg: "todos.getAll", data });
+  res.send({ msg: `${_resourceName}.getAll`, data });
 };
 
 function getResourceName(url, startChar, endChar) {
